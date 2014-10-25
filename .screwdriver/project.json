@@ -53,7 +53,7 @@
     {
       "repository": "https://github.com/elifesciences/lens.git",
       "folder": "node_modules/lens",
-      "branch": "lens_next"
+      "branch": "master"
     },
     {
       "repository": "https://github.com/elifesciences/lens-example-raptor-extension.git",
