@@ -29,6 +29,23 @@ MyConverter.Prototype = function() {
     });
   };
 
+  this._bodyNodes['raptor'] = function(state, child) {
+    return this.raptor(state, child);
+  };
+
+  this.raptor = function(state, raptorEl) {
+    var src = raptorEl.getAttribute('src');
+    var descr = raptorEl.textContent;
+    var raptorNode = {
+      type: "raptor",
+      id: state.nextId('raptor'),
+      img_path: src || '',
+      short_description: descr || ''
+    };
+    state.doc.create(raptorNode);
+    return raptorNode;
+  };
+
 };
 MyConverter.Prototype.prototype = LensConverter.prototype;
 MyConverter.prototype = new MyConverter.Prototype();

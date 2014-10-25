@@ -16,20 +16,17 @@ RaptorView.Prototype = function() {
   // --------
 
   this.render = function () {
-    var raptorPath = this.node.img_path;
-    var raptorDesc = this.node.short_description;
+    NodeView.prototype.render.call(this);
+
+    var raptorPath = this.node.img_path || 'data/raptor.jpg';
+    var raptorDesc = this.node.short_description || 'This is Ravi Raptor';
     var outEl;
 
-    this.content = $$('div.content');
     outEl = document.createElement('img');
-    if (raptorPath) {
-      outEl.setAttribute('src', raptorPath);
-       if (raptorDesc) {
-          outEl.setAttribute('alt', raptorDesc);
-       }
-    }
+    outEl.setAttribute('src', raptorPath);
+    outEl.setAttribute('alt', raptorDesc);
+
     this.content.appendChild(outEl);
-    this.el.appendChild(this.content);
 
     return this;
   };

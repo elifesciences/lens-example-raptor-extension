@@ -111,6 +111,8 @@
     "styles/nodes/contributor.css": "node_modules/lens-article/nodes/contributor/contributor.css",
     "styles/nodes/publication_info.css": "node_modules/lens-article/nodes/publication_info/publication_info.css",
 
+    "styles/nodes/raptor/raptor.css": "src/raptor/raptor.css",
+
     "styles/toc.css": "node_modules/substance-toc/toc.css",
     "styles/reader.css": "node_modules/lens/styles/reader.css",
     "styles/lens.css":  "node_modules/lens/styles/lens.css"

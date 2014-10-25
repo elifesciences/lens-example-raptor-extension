@@ -4,7 +4,15 @@ var MyConfiguration = function() {
   DefaultConfiguration.apply(this, arguments);
 };
 
-MyConfiguration.Prototype = function() {};
+MyConfiguration.Prototype = function() {
+
+  this.viewMapping.raptor = "content";
+
+  this.showNode = function(state, node) {
+    DefaultConfiguration.prototype.showNode.call(this, state, node);
+  };
+
+};
 
 MyConfiguration.Prototype.prototype = DefaultConfiguration.prototype;
 MyConfiguration.prototype = new MyConfiguration.Prototype();

@@ -43,6 +43,10 @@
       </article-meta>
    </front>
    <body>
-      <p>There should be a raptor author with a raptor biography.</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla mi elit, aliquet sit amet imperdiet eget, malesuada eu diam. Quisque commodo in tellus nec dictum. Morbi gravida vestibulum purus vel finibus. Proin feugiat molestie ex, sed vestibulum orci congue eu. Donec varius est nunc, a laoreet tortor pretium sit amet. Pellentesque ullamcorper, ex et congue faucibus, nunc nunc facilisis nisi, eu feugiat nibh odio rhoncus augue. Suspendisse quis interdum mi, vel varius neque. Mauris pretium lobortis nulla quis interdum. Vivamus pretium elit at metus interdum lobortis.</p>
+<raptor src='data/raptor2.gif'>This is another raptor.</raptor>
+<p>Pellentesque consequat, nisl eget accumsan pharetra, lacus libero condimentum lectus, ut eleifend nunc nunc non elit. Phasellus viverra eleifend urna at tempus. Fusce non justo ut mi imperdiet efficitur vel a leo. Maecenas gravida nisl vitae volutpat blandit. Morbi sed ipsum elementum, sollicitudin elit vel, ultricies lacus. Praesent sed facilisis odio, lacinia ultricies quam. Sed id bibendum eros. Ut accumsan, velit non sodales tempus, lacus arcu finibus ante, sit amet facilisis arcu mi egestas nunc. Donec volutpat massa vel ultrices ultricies. Suspendisse consectetur placerat convallis. In scelerisque auctor ex vitae lacinia. Cras sed orci lacus.</p>
+<raptor></raptor>
+<p>Aliquam tristique nisl urna. Fusce porttitor non metus a molestie. Integer ornare efficitur nunc vel viverra. Nam rhoncus turpis vel dolor ornare, in pharetra eros interdum. Nunc sed purus nibh. Vivamus commodo tellus nec quam blandit luctus. Morbi pharetra arcu ipsum, non elementum massa molestie vel. Donec scelerisque cursus libero, eu lobortis ligula vehicula laoreet.</p>
    </body>
 </article>
