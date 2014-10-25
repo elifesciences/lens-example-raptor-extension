@@ -16,7 +16,7 @@ MyConverter.Prototype = function() {
       console.log('Using Rapidiraptor configuration for this article.');
       return new MyConfiguration(this.options);
     } else {
-      return LensConverter.getConfiguration.call(this, xmlDoc);
+      return LensConverter.prototype.getConfiguration.call(this, xmlDoc);
     }
   };
 
