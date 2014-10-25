@@ -97,7 +97,7 @@
     "styles/reader.css": "node_modules/lens/styles/reader.css",
     "styles/lens.css":  "node_modules/lens/styles/lens.css",
 
-    "styles/nodes/raptor/raptor.css": "src/raptor/raptor.css"
+    "styles/nodes/raptor/raptor.css": "src/nodes/raptor/raptor.css"
   },
   "assets": {
     "node_modules/lens/lib/jquery-2.0.3.min.js": "lib/jquery-2.0.3.min.js",
