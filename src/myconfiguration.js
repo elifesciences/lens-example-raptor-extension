@@ -6,10 +6,13 @@ var MyConfiguration = function() {
 
 MyConfiguration.Prototype = function() {
 
-  this.viewMapping.raptor = "content";
+  var _super = DefaultConfiguration.prototype;
 
   this.showNode = function(state, node) {
-    DefaultConfiguration.prototype.showNode.call(this, state, node);
+    _super.showNode.call(this, state, node);
+    if (node.type === 'raptor') {
+      state.doc.show('raptors', node.id);
+    }
   };
 
 };

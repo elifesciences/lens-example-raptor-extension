@@ -22,11 +22,19 @@ MyConverter.Prototype = function() {
 
   this.createDocument = function() {
     // It is possible to inject custom node types directly into the LensArticle constructor
-    return new LensArticle({
+    var article = new LensArticle({
       nodeTypes: {
         raptor: require('./raptor')
       }
     });
+
+    article.create({
+      type: 'view',
+      id: 'raptors',
+      nodes: []
+    });
+
+    return article;
   };
 
   this._bodyNodes['raptor'] = function(state, child) {

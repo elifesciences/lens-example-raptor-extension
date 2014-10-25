@@ -1,10 +1,14 @@
 "use strict";
 
+var _ = require('underscore');
 var NodeView = require("substance-nodes")['node'].View;
+var ResourceView = require("lens-article").ResourceView;
 var $$ = require("substance-application").$$;
 
-var RaptorView = function(node, viewFactory) {
+var RaptorView = function(node, viewFactory, options) {
   NodeView.call(this, node, viewFactory);
+
+  ResourceView.call(this, options);
 
   this.$el.attr({id: node.id});
   this.$el.addClass("content-node raptor");
@@ -12,11 +16,15 @@ var RaptorView = function(node, viewFactory) {
 
 RaptorView.Prototype = function() {
 
+  _.extend(this, ResourceView.prototype);
+
   // Render it
   // --------
 
   this.render = function () {
     NodeView.prototype.render.call(this);
+
+    this.renderHeader();
 
     var raptorPath = this.node.img_path || 'data/raptor.jpg';
     var raptorDesc = this.node.short_description || 'This is Ravi Raptor';

@@ -24,7 +24,11 @@ Raptor.type = {
   }
 };
 
-Raptor.Prototype = function() {};
+Raptor.Prototype = function() {
+  this.getHeader = function() {
+    return "Raptor";
+  };
+};
 Raptor.Prototype.prototype = Document.Node.prototype;
 Raptor.prototype = new Raptor.Prototype();
 Raptor.prototype.constructor = Raptor;
