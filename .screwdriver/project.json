@@ -18,22 +18,12 @@
     {
       "repository": "https://github.com/elifesciences/lens-article.git",
       "folder": "node_modules/lens-article",
-      "branch": "lens_next"
-    },
-    {
-      "repository": "https://github.com/substance/article.git",
-      "folder": "node_modules/substance-article",
-      "branch": "lens"
-    },
-    {
-      "repository": "https://github.com/substance/nodes.git",
-      "folder": "node_modules/substance-nodes",
-      "branch": "lens"
+      "branch": "master"
     },
     {
       "repository": "https://github.com/elifesciences/lens-outline.git",
       "folder": "node_modules/lens-outline",
-      "branch": "lens-next"
+      "branch": "master"
     },
     {
       "repository": "https://github.com/substance/toc.git",
@@ -43,16 +33,11 @@
     {
       "repository": "https://github.com/elifesciences/lens-converter.git",
       "folder": "node_modules/lens-converter",
-      "branch": "lens-next"
+      "branch": "master"
     },
     {
       "repository": "https://github.com/substance/regexp.git",
       "folder": "node_modules/substance-regexp",
-      "branch": "lens"
-    },
-    {
-      "repository": "https://github.com/substance/surface.git",
-      "folder": "node_modules/substance-surface",
       "branch": "lens"
     },
     {
