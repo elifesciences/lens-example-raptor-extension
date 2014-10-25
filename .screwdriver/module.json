@@ -1,0 +1,30 @@
+{
+  "name"          : "lens-with-raptor",
+  "description"   : "Lens example.",
+  "url"           : "https://github.com/elifesciences/lens-example-raptor-extension",
+  "keywords"      : ["lens", "example", "tutorial"],
+  "author"        : "David Moulton",
+  "contributors"  : ["Oliver Buchtala", "Ian Mulvany"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/elifesciences/lens-example-raptor-extension"
+  },
+  "dependencies": {
+    "underscore": "1.5.x",
+    "express": "3.3.x",
+    "ejs": "*",
+    "substance-util": "",
+    "substance-surface": "",
+    "substance-document": "",
+    "substance-data": "",
+    "substance-application": "",
+    "lens-article": "",
+    "lens-outline": "",
+    "lens-converter": "",
+    "lens": ""
+  },
+  "devDependencies": {
+    "substance-cjs": "*"
+  },
+  "version": "1.0.0"
+}

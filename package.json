@@ -1,0 +1,33 @@
+{
+  "name"          : "lens-next",
+  "description"   : "Advancing eLife Lens.",
+  "url"           : "http://github.com/elifesciences/lens-next",
+  "keywords"      : ["digital documents", "linked-data", "research", "science"],
+  "author"        : "Michael Aufreiter",
+  "contributors"  : ["Oliver Buchtala", "Ian Mulvany"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/elifesciences/lens-next.git"
+  },
+  "dependencies": {
+    "underscore": "1.5.x",
+    "express": "3.3.x",
+    "ejs": "*",
+    "substance-util": "",
+    "substance-surface": "",
+    "substance-document": "",
+    "substance-data": "",
+    "substance-application": "",
+    "lens-article": "",
+    "lens-outline": "",
+    "lens-converter": ""
+  },
+  "devDependencies": {
+    "substance-cjs": "*"
+  },
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=0.8.x",
+    "npm": ">=1.1.x"
+  }
+}
