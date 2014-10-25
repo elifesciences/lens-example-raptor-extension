@@ -21,7 +21,8 @@ LensWithRaptor.Prototype = function() {
   this.getPanelFactory = function() {
     var panelSpecs = Lens.getDefaultPanelSpecification();
     panelSpecs.panels.raptors = raptorsPanel;
-    panelSpecs.panelOrder = ['toc', 'raptors', 'figures', 'citations', 'definitions', 'info'];
+    // always put the raptors panel at second position
+    panelSpecs.panelOrder.splice(1, 0, 'raptors');
     return new Lens.Reader.PanelFactory(panelSpecs);
   };
 };
