@@ -1,9 +1,9 @@
 "use strict";
 
 var _ = require('underscore');
-var NodeView = require("substance-nodes")['node'].View;
+var LensArticleNodes = require('lens-article/nodes');
+var NodeView = LensArticleNodes['node'].View;
 var ResourceView = require("lens-article").ResourceView;
-var $$ = require("substance-application").$$;
 
 var RaptorView = function(node, viewFactory, options) {
   NodeView.call(this, node, viewFactory);
