@@ -127,20 +127,18 @@ lens outline controls the scroll bar document maps.
 # A Lens article
 A Lens article is a collection of nodes. There are 2 types of nodes.
 
-## substance nodes
-These are found in ```lens/node_modules/substance-nodes/src/```.
-
-They are the base nodes.
-
 ## lens article nodes
 These are found in ```lens/node_modules/lens-article/nodes/```.
 
-These nodes are used to build the Lens article. If a corresponding substance node exists, and there is no change to it, the lens article node just uses the respective underlying substance node. If a change from the respective substance node is required, that the new node definition is found here.
+These nodes are used to build the Lens article.
+
+> Ninja-Note: the dependency to substance-nodes has been removed, as it depended on a rather old branch and the modern version is more related to
+> editing and is unnecessarily complex. Overall, we try to go an independent way for nodes in future, thus all (built-in) nodes are found here.
 
 ## registering lens article nodes
 For lens to know about the lens-article nodes available, they must be registered as dependencies; this happens in ```lens/node_modules/lens-article/nodes/index.js```. If you're creating a new node, you must register it in this file for it to take.
 
-## What's in a ~~name~~ node?
+## What's in a node?
 
 + A node is defined within a directory that has the name of the node, so the definition of the substance base image node is found at the path ```lens/node_modules/substance-nodes/src/image/```.
 + A node definition always contains ```index.js```. This file manages the dependancices for the guts of the node definition (the model and the view). Continuing the previous example, the full contents of ```lens/node_modules/substance-nodes/src/image/index.js``` is:
@@ -156,14 +154,6 @@ module.exports = {
 
 Here we can see that the image node's model is defined in ```image.js```, and the its view is defined in ```image_view.js```.
 
-If a lens article is just using the base substance node with no changes, the lens-article definition of the node references that underlying substance node. For example the lens article image node found at ```lens/node_modules/lens-article/nodes/image``` only contains ```index.js```. This ```index.js``` references the underlying substance node:
-
-```JavaScript
-"use strict";
-
-var SubstanceNodes = require("substance-nodes");
-module.exports = SubstanceNodes["image"];
-```
 ### The model
 Looking inside ```image.js``` at the definition of the image node's model, ```ImageNode```, like all nodes, has a type definition.
 
@@ -180,22 +170,22 @@ ImageNode.type = {
 
 This is a quite a simple node as it's just for an image. Its parent is ```"webresource"``` but many nodes often have the parent of ```"content"```.
 
-The ```Table``` lens article node is an example of a node with ```content``` as a parent. Its object model has more properties and is more complex than ```ImageNode```. Let's break down the ```Table``` node model (see ```lens/node_modules/lens-article/nodes/table```):
+The ```HTMLTable``` lens article node is an example of a node with ```content``` as a parent. Its object model has more properties and is more complex than ```ImageNode```. Let's break down the ```HTMLTable``` node model (see ```lens/node_modules/lens-article/nodes/html_table```):
 
-Dependencies are established, ```Table``` will be a ```Node```:
+Dependencies are established, ```HTMLTable``` will be a ```Node```:
 ```JavaScript
 var _ = require('underscore');
 var Node = require('substance-document').Node;
 ```
-Then the actual ```Lens.Table``` is created. Each node has a similar setup to this (with a slight difference if the type is composite document (```Document.Composite```) rather than a node).
+Then the actual ```Lens.HTMLTable``` is created. Each node has a similar setup to this (with a slight difference if the type is composite document (```Document.Composite```) rather than a node).
 ```JavaScript
-var Table = function(node, doc) {
+var HTMLTable = function(node, doc) {
   Node.call(this, node, doc);
 };
 ```
-Next the ```Table``` type is defined. Each node type has a similar structure, with ```id```, ```parent``` and ```properties```.
+Next the ```HTMLTable``` type is defined. Each node type has a similar structure, with ```id```, ```parent``` and ```properties```.
 ```JavaScript```
-Table.type = {
+HTMLTable.type = {
   "id": "table",
   "parent": "content",
   "properties": {
@@ -211,19 +201,19 @@ Note that ```"footers": ["array", "string"]``` means that the ```footer``` prope
 
 Next a configuration option. Some node types have extra configuration like this, others don't.
 ```JavaScript
-Table.config = {
+HTMLTable.config = {
   "zoomable": true
 };
 ```
 
-> Ninja-Note: This is not a general built-in feature, but rather custom for that Node implementation. Supposedly, this option
->             has been used somewhere like `node.constructor.config.zoomable`
+> Ninja-Note: Some node types are used in the context of resource panels. There they get a header bar, where a 'zoom' and a 'show' button may
+> be provided.
 
-Then there's the setting of a couple of documentation/example related properties ```Table.description``` and ```Table.example``` that we won't worry about here.
+Then there's the setting of a couple of documentation/example related properties ```HTMLTable.description``` and ```HTMLTable.example``` that we won't worry about here.
 
 Then the prototype is set up. Each node type has a prototype defined in the same way (although what it exposes depends on the type, of course), except that in the case of composite documents, the object's ```Prototype.prototype``` is set to ```Document.Composite.prototype``` rather than ```Node.prototype```.
 ```JavaScript
-Table.Prototype = function() {
+HTMLTable.Prototype = function() {
   this.getCaption = function() {
     if (this.properties.caption) {
       return this.document.get(this.properties.caption);
@@ -231,41 +221,22 @@ Table.Prototype = function() {
   };
 };
 
-Table.Prototype.prototype = Node.prototype;
-Table.prototype = new Table.Prototype();
-Table.prototype.constructor = Table;
+HTMLTable.Prototype.prototype = Node.prototype;
+HTMLTable.prototype = new HTMLTable.Prototype();
+HTMLTable.prototype.constructor = HTMLTable;
 ```
 Finally any getters are set up
 ```JavaScript
-var getters = {
-  header: {
-    get: function() {
-      return this.properties.label;
-    }
-  }
-};
-
-_.each(Table.type.properties, function(prop, key) {
-  getters[key] = {
-    get: function() {
-      return this.properties[key];
-    }
-  };
-});
-
-Object.defineProperties(Table.prototype, getters);
+Node.defineProperties(HTMLTable);
 ```
 
-> Ninja-Note: In a newer Substance version, this has been simplified much. I hope we can do a migration soon.
-
-
-Then we expose ```Table``` to the world, and we're done:
+Then we expose ```HTMLTable``` to the world, and we're done:
 ```JavaScript
-module.exports = Table;
+module.exports = HTMLTable;
 ```
 
 ### The view
-Let's take a look at the corresponding view for a table, which as you'll remember is held in ```table_view.js```.
+Let's take a look at the corresponding view for a table, which as you'll remember is held in ```html_table_view.js```.
 
 Dependancies first:
 ```JavaScript
@@ -281,7 +252,7 @@ var $$ = require("substance-application").$$;
 
 Next create what will become the actual view (see Ninja-Note below about ```viewFactory```).
 ```JavaScript
-var TableView = function(node, viewFactory) {
+var HTMLTableView = function(node, viewFactory) {
   NodeView.call(this, node);
   this.viewFactory = viewFactory;
 
@@ -293,7 +264,7 @@ var TableView = function(node, viewFactory) {
 
 Add its prototype. In the prototype, the ```render``` function is where most of the action happens. If you're building a new type, this is where you'll control how it displays.
 ```JavaScript
-TableView.Prototype = function() {
+HTMLTableView.Prototype = function() {
 
   this.render = function() {
     var node = this.node;
@@ -336,12 +307,12 @@ TableView.Prototype = function() {
     // this.content.appendChild($$('.not-yet-implemented', {text: "This node type has not yet been implemented. "}));
     return this;
   }
-  TableView.Prototype.prototype = NodeView.prototype;
-  TableView.prototype = new TableView.Prototype();
+  HTMLTableView.Prototype.prototype = NodeView.prototype;
+  HTMLTableView.prototype = new HTMLTableView.Prototype();
   ```
   Then we let it loose into the world and we're done:
   ```JavaScript
-module.exports = TableView;
+module.exports = HTMLTableView;
 ```
 
 > Ninja-Note: every view is provided with a view factory instance. This way it is possible to create views for sub-components,
@@ -349,8 +320,7 @@ module.exports = TableView;
 > Needless to say, that the factory is passed to every constructor to allow using different factories in
 > different contexts. The factory would be used this way:
 >
->     var component = this.node.document.get(this.node.someComponent);
->     var componentView = viewFactory.createView(component);
+>     var componentView = this.createView(nodeId);
 >     this.content.appendChild(componentView.render().el);
 
 # Importing the xml into Lens
@@ -503,16 +473,16 @@ module.exports = Raptor;
 And the job's a good 'un. So now the full ```raptor.js``` file looks like this:
 ```JavaScript
 "use strict";
-var _ = require('underscore');
 
-var Node = require('substance-document').Node;
+var _ = require('underscore');
+var Document = require('substance-document');
 
 // Lens.Raptor
 // -----------------
 //
 
 var Raptor = function(node, doc) {
-  Node.call(this, node, doc);
+  Document.Node.call(this, node, doc);
 };
 
 // Type definition
@@ -523,23 +493,24 @@ Raptor.type = {
   "id": "raptor",
   "parent": "content",
   "properties": {
-      "img_path": "string",
-      "short_description": "string"
-    }
+    "img_path": "string",
+    "short_description": "string"
+  }
 };
-
 
 Raptor.Prototype = function() {
-
+  this.getHeader = function() {
+    return "Raptor";
+  };
 };
-
-Raptor.Prototype.prototype = Node.prototype;
+Raptor.Prototype.prototype = Document.Node.prototype;
 Raptor.prototype = new Raptor.Prototype();
 Raptor.prototype.constructor = Raptor;
 
-Node.defineProperties(Raptor.prototype, ["img_path", "short_description"]);
+Document.Node.defineProperties(Raptor);
 
 module.exports = Raptor;
+
 ```
 
 ### Creating the view
@@ -550,19 +521,15 @@ First, setup the dependencies:
 "use strict";
 
 var _ = require("underscore");
-var util = require("substance-util");
-var html = util.html;
-var CompositeView = require("../composite").View;
+var NodeView = require("../node").View;
 var $$ = require("substance-application").$$;
 ```
 
 Then create the view object:
 ```JavaScript
 var RaptorView = function(node, viewFactory) {
-  CompositeView.call(this, node, viewFactory);
+  NodeView.call(this, node, viewFactory);
 
-  this.$el.attr({id: node.id});
-  this.$el.addClass("content-node raptor");
 };
 ```
 
@@ -594,7 +561,7 @@ RaptorView.Prototype = function() {
   };
 };
 
-RaptorView.Prototype.prototype = CompositeView.prototype;
+RaptorView.Prototype.prototype = NodeView.prototype;
 RaptorView.prototype = new RaptorView.Prototype();
 RaptorView.prototype.constructor = RaptorView;
 ````
@@ -608,14 +575,15 @@ The full ```raptor_view.js``` should look like this:
 ```JavaScript
 "use strict";
 
-var _ = require("underscore");
-var util = require("substance-util");
-var html = util.html;
-var CompositeView = require("../composite").View;
-var $$ = require("substance-application").$$;
+var _ = require('underscore');
+var LensArticleNodes = require('lens-article/nodes');
+var NodeView = LensArticleNodes['node'].View;
+var ResourceView = require("lens-article").ResourceView;
 
-var RaptorView = function(node, viewFactory) {
-  CompositeView.call(this, node, viewFactory);
+var RaptorView = function(node, viewFactory, options) {
+  NodeView.call(this, node, viewFactory);
+
+  ResourceView.call(this, options);
 
   this.$el.attr({id: node.id});
   this.$el.addClass("content-node raptor");
@@ -623,31 +591,31 @@ var RaptorView = function(node, viewFactory) {
 
 RaptorView.Prototype = function() {
 
+  _.extend(this, ResourceView.prototype);
+
   // Render it
   // --------
 
   this.render = function () {
-    var node = this.node;
-    var raptorPath = this.node.img_path;
-    var raptorDesc = this.node.short_description;
+    NodeView.prototype.render.call(this);
+
+    this.renderHeader();
+
+    var raptorPath = this.node.img_path || 'data/raptor.jpg';
+    var raptorDesc = this.node.short_description || 'This is Ravi Raptor';
     var outEl;
 
-    this.content = $$('div.content');
     outEl = document.createElement('img');
-    if (raptorPath) {
-      outEl.setAttribute('src', raptorPath);
-       if (raptorDesc) {
-          outEl.setAttribute('alt', raptorDesc);
-       }
-    }
+    outEl.setAttribute('src', raptorPath);
+    outEl.setAttribute('alt', raptorDesc);
+
     this.content.appendChild(outEl);
-    this.el.appendChild(this.content);
 
     return this;
   };
 };
 
-RaptorView.Prototype.prototype = CompositeView.prototype;
+RaptorView.Prototype.prototype = NodeView.prototype;
 RaptorView.prototype = new RaptorView.Prototype();
 RaptorView.prototype.constructor = RaptorView;
 
@@ -655,35 +623,95 @@ module.exports = RaptorView;
 ```
 
 ### Registering the node
-Now we have defined raptor, our new lens article node type, we need to register it so it can be used. We do this in ```lens/node_modules/lens-article/nodes/index.js```:
+Now we have defined raptor, our new lens article node type, we need to register it so it can be used. We do this in ```src/nodes/index.js```:
 
 ```JavaScript
 "use strict";
+
 module.exports = {
-  "raptor": require("./raptor"), // <-- registering our raptor
-  "publication_info": require("./publication_info"),
-  "box": require("./box"),
-  "cover": require("./cover"),
-  "text": require("./text"),
-  "paragraph": require("./paragraph"),
-  "heading": require("./heading"),
-  "figure": require("./figure"),
-  "caption": require("./caption"),
-  "image": require("./image"),
-  "webresource": require("./web_resource"),
-  "table": require("./table"),
-  "supplement": require("./supplement"),
-  "video": require("./video"),
-  "contributor": require("./contributor"),
-  "definition": require("./definition"),
-  "citation": require("./citation"),
-  "formula": require('./formula'),
-  "list": require("./list"),
-  "codeblock": require("./codeblock"),
-  "affiliation": require("./_affiliation"),
-  "footnote": require("./footnote"),
+  "raptor": require("./raptor"),
 };
 ```
+
+If you want to extend the core Lens article format in an experimental stage, the recommended way to that is to use customized converter
+that injects custom node definitions:
+
+For example this is done in `./myconverter.js`:
+
+```JavaScript
+  ...
+
+  this.createDocument = function() {
+    // It is possible to inject custom node types directly into the LensArticle constructor
+    var article = new LensArticle({
+      nodeTypes: require('./nodes')
+    });
+    return article;
+  };
+  ...
+```
+
+### Adding a Raptor Panel
+
+In our example we want to display raptor nodes in a dedicated raptor panel. Panels can be created in a declarative way on application level.
+
+
+For that you need to derive from `Lens` and override `getPanelFactory()` (see `./src/lens_with_raptor.js`):
+
+```JavaScript
+var Lens = require('lens');
+
+var LensWithRaptor = function(config) {
+  Lens.call(this, config);
+};
+
+var raptorsPanel = {
+  type: 'resource',
+  container: 'raptors',
+  label: 'Raptors',
+  title: 'Raptors',
+  icon: 'icon-twitter',
+  viewFactory: Lens.ResourcePanelViewFactory
+};
+
+LensWithRaptor.Prototype = function() {
+  this.getPanelFactory = function() {
+    var panelSpecs = Lens.getDefaultPanelSpecification();
+    panelSpecs.panels.raptors = raptorsPanel;
+    panelSpecs.panelOrder = ['toc', 'raptors', 'figures', 'citations', 'definitions', 'info'];
+    return new Lens.Reader.PanelFactory(panelSpecs);
+  };
+};
+LensWithRaptor.Prototype.prototype = Lens.prototype;
+LensWithRaptor.prototype = new LensWithRaptor.Prototype();
+```
+
+Pushing nodes to a panel can be achieved by providing a custom converter configuration (see `./src/myconfiguration.js`):
+
+```JavaScript
+  ...
+  this.showNode = function(state, node) {
+    _super.showNode.call(this, state, node);
+    if (node.type === 'raptor') {
+      state.doc.show('raptors', node.id);
+    }
+  };
+  ...
+```
+
+Attention: this is works only if we create a corresponding 'view' node in the document (see `./src/myconverter.js`):
+
+```JavaScript
+    // add a container for raptor nodes, which will be presented in their own panel
+    article.create({
+      type: 'view',
+      id: 'raptors',
+      nodes: []
+    });
+
+```
+
+> Ninja-Note: this should be derived from panel specifications in future
 
 ### Quick recap
 Okay, so far we have:
